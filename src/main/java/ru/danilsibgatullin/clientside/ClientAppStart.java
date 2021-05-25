@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ru.danilsibgatullin.clientside.controllers.MainClientController;
 
 
 public class ClientAppStart extends Application {
@@ -15,14 +16,12 @@ public class ClientAppStart extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        String fxmlFile = "fxml/mainline.fxml";
+        String fxmlFile = "/fxml/mainclient.fxml";
         FXMLLoader loader = new FXMLLoader();
-        Parent root = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
+        Parent root = loader.load(getClass().getResource(fxmlFile));
         stage.setTitle("MyCoolCloudStorage");
         stage.setScene(new Scene(root));
         stage.show();
     }
 
-    public void click(ActionEvent actionEvent) {
-    }
 }

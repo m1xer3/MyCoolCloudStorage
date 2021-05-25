@@ -18,6 +18,7 @@ public class CommandList {
         commandListReturnString.add("-vdt"); //просмотр даты обновления
         commandListReturnString.add("-src"); //поиск
         commandListReturnString.add("sort"); //сортировка
+
     }
 
     public synchronized boolean searchCommandReturnString(String command){
@@ -27,5 +28,6 @@ public class CommandList {
             }
         }
         return false;
+
     }
 }
