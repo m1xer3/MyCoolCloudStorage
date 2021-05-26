@@ -9,6 +9,7 @@ import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+//Класс обработки загрузки файлов.
 
 public class FileHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
@@ -16,7 +17,7 @@ public class FileHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
         StringBuilder sb =new StringBuilder();
         char c=' ';
-        //получаем путь где должен создаться файл и его имя путь и байты самого файла разделены символом |
+        //получаем путь где должен создаться файл и его имя. Путь и байты самого файла разделены символом |
         while(byteBuf.isReadable()&&'|'!=c){
             c=(char)byteBuf.readByte();
             sb.append(c);

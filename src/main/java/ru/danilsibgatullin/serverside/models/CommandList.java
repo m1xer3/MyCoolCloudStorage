@@ -2,6 +2,7 @@ package ru.danilsibgatullin.serverside.models;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+//Класс на данный момент не используется , оставил как хранилище текущих команд, его судьбу определю позже
 
 public class CommandList {
     private ConcurrentLinkedQueue<String> commandListReturnString = new ConcurrentLinkedQueue<>();

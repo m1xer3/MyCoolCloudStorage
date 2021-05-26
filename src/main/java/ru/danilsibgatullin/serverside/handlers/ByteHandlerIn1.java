@@ -3,8 +3,8 @@ package ru.danilsibgatullin.serverside.handlers;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import ru.danilsibgatullin.serverside.models.CommandList;
 
+//Класс обработчик in-1
 public class ByteHandlerIn1 extends ChannelInboundHandlerAdapter {
 
     @Override
@@ -40,7 +40,6 @@ public class ByteHandlerIn1 extends ChannelInboundHandlerAdapter {
         } else {
             ctx.fireChannelRead(buf);
         }
-
     }
 
     @Override

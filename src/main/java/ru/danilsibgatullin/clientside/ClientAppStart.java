@@ -1,12 +1,10 @@
 package ru.danilsibgatullin.clientside;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ru.danilsibgatullin.clientside.controllers.MainClientController;
 
 
 public class ClientAppStart extends Application {
