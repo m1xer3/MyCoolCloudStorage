@@ -20,8 +20,9 @@
 *.rar
 .idea
 target
-server
+serverfolder
 .gitignore
+*.iml
 
 # IntelliJ
 out/
