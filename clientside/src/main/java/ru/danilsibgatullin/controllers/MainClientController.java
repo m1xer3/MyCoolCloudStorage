@@ -1,53 +1,79 @@
 package ru.danilsibgatullin.controllers;
 
-import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.Channel;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import ru.danilsibgatullin.models.CurrentFolderContent;
+import ru.danilsibgatullin.services.ConnectHolder;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
+
 
 //Класс контроллер основного окна приложения
 public class MainClientController {
 
-    private Channel channel;
-    private EventLoopGroup client =new NioEventLoopGroup();
-    private Bootstrap connectServer = new Bootstrap();
+    CurrentFolderContent currentFolderContent =new CurrentFolderContent();
 
-    public Channel getChannel() {
-        return channel;
-    }
+    @FXML
+    TextField commandLine;
 
-    public void setChannel(Channel channel) {
-        this.channel = channel;
-    }
+    @FXML
+    TextField currentPath;
+
+    @FXML
+    ListView<String> listView;
 
     @FXML
     Button sendButton;
 
     @FXML
-    Button connectButton;
+    Button delButton;
 
     @FXML
-    TextField commandLine;
+    Button openButton;
+
+    @FXML
+    Button uploadButton;
+
+    @FXML
+    Button disconnectButton;
+
+    @FXML
+    Button refreshButton;
+
+    @FXML
+    public void initialize(){
+        //TODO заполнение текущей папки
+        currentFolderContent =new CurrentFolderContent();
+        for (File file : CurrentFolderContent.curFolder) {
+            listView.getItems().add(file.getName());
+        }
+    }
 
     //Отправка информации на сервер
     @FXML
     public void send(){
         String toSend = commandLine.getText();
         ByteBuf buf =Unpooled.wrappedBuffer(toSend.getBytes(StandardCharsets.UTF_8));
-        channel.writeAndFlush(buf);
+        ConnectHolder.channel.writeAndFlush(buf);
     }
 
     //TODO корректное закрытие
     @FXML
     public void disconnect() {
 
+    }
+
+    @FXML
+    public void refresh() {
+        String toSend = "getd";
+        ByteBuf buf =Unpooled.wrappedBuffer(toSend.getBytes(StandardCharsets.UTF_8));
+        ConnectHolder.channel.writeAndFlush(buf);
+        listView=currentFolderContent.getListViewFolderContent();
     }
 }
 

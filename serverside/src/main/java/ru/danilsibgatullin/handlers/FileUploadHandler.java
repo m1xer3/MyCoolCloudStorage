@@ -3,6 +3,8 @@ package ru.danilsibgatullin.handlers;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import ru.danilsibgatullin.models.UserChanel;
+import ru.danilsibgatullin.services.FileService;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -11,10 +13,18 @@ import java.nio.file.Path;
 
 //Класс обработки загрузки файлов.
 
-public class FileHandler extends SimpleChannelInboundHandler<ByteBuf> {
+public class FileUploadHandler extends SimpleChannelInboundHandler<ByteBuf> {
+
+    private UserChanel chanel;
+
+    public FileUploadHandler(UserChanel ch){
+        this.chanel=ch;
+    }
+
+
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
-
+        FileService fs =chanel.getFs();
         StringBuilder sb =new StringBuilder();
         char c=' ';
         //получаем путь где должен создаться файл и его имя. Путь и байты самого файла разделены символом |
@@ -23,7 +33,7 @@ public class FileHandler extends SimpleChannelInboundHandler<ByteBuf> {
             sb.append(c);
         }
         String path = sb.toString();
-        createFile(path); // создаем файл
+        fs.createFile(path); // создаем файл
         RandomAccessFile file =new RandomAccessFile(path,"rw"); //открываем файл на запись
         while (byteBuf.isReadable()){
             file.write(byteBuf.readByte());
@@ -31,11 +41,6 @@ public class FileHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     }
 
-    private void createFile(String path) throws IOException {
-        Path newPath = Path.of(path);
-        if (!Files.exists(newPath)) {
-            Files.createFile(newPath);
-        }
-    }
+
 
 }

@@ -45,6 +45,14 @@ public class FileService {
                 .forEach(File::delete); //удаляем с обратной стороны что бы не было DirectoryNotEmptyException
     }
 
+//  Создание файла
+    public void createFile(String path) throws IOException {
+        Path newPath = Path.of(path);
+        if (!Files.exists(newPath)) {
+            Files.createFile(newPath);
+        }
+    }
+
 //  Получение структуры каталога
     public List<File> getDirectoryContent (Path dir) throws IOException {
        return Files.list(dir).map(Path::toFile).collect(Collectors.toList());

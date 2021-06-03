@@ -2,8 +2,13 @@ package ru.danilsibgatullin.handlers;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import ru.danilsibgatullin.models.StorageUnit;
 import ru.danilsibgatullin.models.UserChanel;
 import ru.danilsibgatullin.services.FileService;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
 
 
 /*
@@ -25,11 +30,20 @@ public class StringCommandHandler extends SimpleChannelInboundHandler<String> {
         if (str.startsWith("mkdr")){
             System.out.println(str);
             fs.mkDir(chanel.getCurrentPath(),str.substring(5));
-        } else if(str.startsWith("--rm")) {
+        }else if(str.startsWith("getd")){
+            List<File> list= fs.getDirectoryContent(Path.of(chanel.getCurrentPath()));
+//          временно
+            for (File file : list) {
+                System.out.println(file.getName());
+            }
+//            --
+            ctx.writeAndFlush(new StorageUnit(list));
+        }else if(str.startsWith("--rm")) {
             fs.delDir(chanel.getCurrentPath(),str.substring(5));
         } else if(str.startsWith("--cd")){
             changeDir(str.substring(5));
         }
+
     }
 
 //    Изменение текущео пути

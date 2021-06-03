@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class ClientAppStart extends Application {
 
@@ -23,15 +24,8 @@ public class ClientAppStart extends Application {
         Parent loginView = loader.load(getClass().getResource(fxmlFileLogin));
         mainStage.setTitle("MyCoolCloudStorage");
         mainStage.setScene(new Scene(loginView));
+        mainStage.setResizable(false);
         mainStage.show();
-    }
-
-    public static void setMainStage(Stage stage){
-        mainStage=stage;
-    }
-
-    public static Stage getMainStage(){
-        return mainStage;
     }
 
 }

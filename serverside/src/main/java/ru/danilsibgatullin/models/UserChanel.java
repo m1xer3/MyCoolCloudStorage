@@ -2,9 +2,10 @@ package ru.danilsibgatullin.models;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 import ru.danilsibgatullin.handlers.AuthorityHandler;
 import ru.danilsibgatullin.handlers.ByteHandlerIn1;
-import ru.danilsibgatullin.handlers.FileHandler;
+import ru.danilsibgatullin.handlers.FileUploadHandler;
 import ru.danilsibgatullin.handlers.StringCommandHandler;
 import ru.danilsibgatullin.services.FileService;
 
@@ -22,17 +23,23 @@ public class UserChanel extends ChannelInitializer {
         this.userName = userName;
         this.userSystemPath="serverfolder/"+userName;
         this.fs=new FileService(userName);
+        this.currentPath=userSystemPath;
     }
 
 
     @Override
     protected void initChannel(Channel ch) throws Exception {
         ch.pipeline().addLast(
+
                 new ByteHandlerIn1(),
+                new ObjectEncoder(),
                 new AuthorityHandler(this),
                 new StringCommandHandler(this),
-                new FileHandler()
-//                new AuthorityHandlerOut()
+                new FileUploadHandler(this)
+
+
+
+
 
 //				new OutputHandler(), //TODO Реализовать OUT
         );

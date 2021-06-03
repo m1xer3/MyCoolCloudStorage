@@ -15,15 +15,15 @@
              </Label>
             <Pane prefHeight="314.0" prefWidth="600.0">
                <children>
-                  <TextField fx:id="userName" layoutX="300.0" layoutY="133.0" />
-                  <TextField fx:id="port" layoutX="300.0" layoutY="93.0" />
-                  <TextField fx:id="server" layoutX="300.0" layoutY="54.0" />
+                  <TextField fx:id="userName" layoutX="300.0" layoutY="133.0" text="U_M1" />
+                  <TextField fx:id="port" layoutX="300.0" layoutY="93.0" text="7777" />
+                  <TextField fx:id="server" layoutX="300.0" layoutY="54.0" text="localhost" />
                   <Label layoutX="180.0" layoutY="54.0" text="Server" />
                   <Label layoutX="188.0" layoutY="93.0" text="Port" />
                   <Label layoutX="168.0" layoutY="133.0" text="Username" />
                   <Label layoutX="170.0" layoutY="171.0" text="Password" />
-                  <PasswordField fx:id="pass" layoutX="300.0" layoutY="171.0" />
-                  <Button layoutX="236.0" layoutY="232.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="139.0" text="Connect" textAlignment="CENTER" fx:id="connectButton" onAction="#connect"/>
+                  <PasswordField fx:id="pass" layoutX="300.0" layoutY="171.0" text="qwerty" />
+                  <Button fx:id="connectButton" layoutX="236.0" layoutY="232.0" mnemonicParsing="false" onAction="#connect" prefHeight="26.0" prefWidth="139.0" text="Connect" textAlignment="CENTER" />
                </children></Pane>
          </children>
       </VBox>

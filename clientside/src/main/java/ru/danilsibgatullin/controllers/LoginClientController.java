@@ -1,12 +1,7 @@
 package ru.danilsibgatullin.controllers;
 
-import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.Channel;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,27 +10,32 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import ru.danilsibgatullin.handlers.AuthoritiClientHadler;
+import ru.danilsibgatullin.services.ConnectHolder;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+
+/*
+Класс контроллер окна авторизации
+ */
 public class LoginClientController {
 
-    private Channel channel;
-    private EventLoopGroup client =new NioEventLoopGroup();
-    private Bootstrap connectServer = new Bootstrap();
-    private boolean isAutorized =false;
-    private boolean answerResived =false;
-    private MainClientController control = new MainClientController();
+    private boolean chanelInit=false; // Флаг инициации канала
+    private boolean isAuthorized=false;
+    private boolean isHide=false;
+
+    private FXMLLoader loader = new FXMLLoader();
+    private Parent mainView;
+    private Stage stage = new Stage();
+    private ConnectHolder connectHolder;
+
 
     @FXML
     Button connectButton;
 
     @FXML
     TextField server;
-
-
 
     @FXML
     TextField port;
@@ -48,29 +48,23 @@ public class LoginClientController {
 
 
     @FXML
-    public void connect() throws InterruptedException, IOException {
-//  Подлучение канала
-       channel=connectServer.group(client)
-                .channel(NioSocketChannel.class)
-                .handler(new AuthoritiClientHadler(this))
-                .connect(server.getText(),Integer.parseInt(port.getText()))
-                .sync()
-                .channel();
-
+    public void connect() throws InterruptedException {
+//  Подлучение канала в случае если уже инициировали канал второй раз этого не делаем
+        if(!chanelInit){
+            connectHolder= new ConnectHolder(this,server.getText(),Integer.parseInt(port.getText()));
+            chanelInit=true;
+        }
         String toSend = "auth "+userName.getText()+" "+pass.getText();
         ByteBuf buf =Unpooled.wrappedBuffer(toSend.getBytes(StandardCharsets.UTF_8));
-        channel.writeAndFlush(buf);
+        ConnectHolder.channel.writeAndFlush(buf);
     }
 
-    public void changeSceneToMain() throws IOException {
+    public void changeSceneToMain(){
         Platform.runLater(()->{
-            FXMLLoader loader = new FXMLLoader();
-            Parent mainView = null;
             try {
-                mainView = loader.load(getClass().getResource("/fxml/mainclient.fxml"));
-                control.setChannel(channel);
-                Stage stage = new Stage();
+                mainView  = loader.load(getClass().getResource("/fxml/mainclient.fxml"));
                 stage.setScene(new Scene(mainView));
+                stage.setResizable(false);
                 stage.show();
                 Stage stage2 = (Stage) connectButton.getScene().getWindow();
                 stage2.hide();
@@ -80,32 +74,20 @@ public class LoginClientController {
         });
     }
 
-    public Button getConnectButton() {
-        return connectButton;
+    public boolean isAuthorized() {
+        return isAuthorized;
     }
 
-    public Channel getChannel() {
-        return channel;
+    public void setAuthorized(boolean authorized) {
+        isAuthorized = authorized;
     }
 
-    public void setChannel(Channel channel) {
-        this.channel = channel;
+    public boolean isHide() {
+        return isHide;
     }
 
-    public boolean isAutorized() {
-        return isAutorized;
-    }
-
-    public void setAutorized(boolean autorized) {
-        isAutorized = autorized;
-    }
-
-    public boolean isAnswerResived() {
-        return answerResived;
-    }
-
-    public void setAnswerResived(boolean answerResived) {
-        this.answerResived = answerResived;
+    public void setHide(boolean hide) {
+        isHide = hide;
     }
 
 }

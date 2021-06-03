@@ -1,5 +1,6 @@
 package ru.danilsibgatullin.handlers;
 
+import com.mysql.cj.util.StringUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,7 +23,7 @@ public class AuthorityHandler extends SimpleChannelInboundHandler<String> {
             String[] strArr = str.split(" ");
             AuthorityService auth = new AuthorityService();
             String username = auth.authorityService(strArr[1],strArr[2]);
-            if (!username.isEmpty()){
+            if (!StringUtils.isNullOrEmpty(username)){
                 user.setUserName(username);
                 System.out.println(true);
                 ByteBuf buf = Unpooled.wrappedBuffer("true".getBytes(StandardCharsets.UTF_8));
