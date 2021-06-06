@@ -30,15 +30,16 @@ public class FileUploadHandler extends SimpleChannelInboundHandler<ByteBuf> {
         //получаем путь где должен создаться файл и его имя. Путь и байты самого файла разделены символом |
         while(byteBuf.isReadable()&&'|'!=c){
             c=(char)byteBuf.readByte();
-            sb.append(c);
+            if('|'!=c){
+                sb.append(c);
+            }
         }
-        String path = sb.toString();
+        String path =chanel.getCurrentPath()+"/"+sb.toString();
         fs.createFile(path); // создаем файл
         RandomAccessFile file =new RandomAccessFile(path,"rw"); //открываем файл на запись
         while (byteBuf.isReadable()){
             file.write(byteBuf.readByte());
         }
-
     }
 
 

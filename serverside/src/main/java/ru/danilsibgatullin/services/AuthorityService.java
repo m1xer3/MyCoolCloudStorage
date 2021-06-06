@@ -5,6 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/*
+Сервис авторизации в БД
+ */
+
 public class AuthorityService{
 
     //TODO шифрование пароля
@@ -12,7 +16,7 @@ public class AuthorityService{
         Statement statement = null;
         String userName =null;
         try{
-            statement = ConnectDB.getConnectDB().createStatement();
+            statement = new ConnectDB().getConnectDB().createStatement();
             ResultSet set = statement.executeQuery("SELECT Username FROM User where Username ='"+login+"' and Password ='"+password+"'");
             while(set.next()){
                 userName= set.getString("Username");

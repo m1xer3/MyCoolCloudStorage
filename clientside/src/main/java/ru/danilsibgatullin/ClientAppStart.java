@@ -2,15 +2,16 @@ package ru.danilsibgatullin;
 
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import ru.danilsibgatullin.services.ConnectHolder;
 
 public class ClientAppStart extends Application {
 
-    private static Stage mainStage=new Stage();
 
     public static void main(String[] args) throws Exception {
         launch(args);
@@ -18,14 +19,18 @@ public class ClientAppStart extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        mainStage=stage;
+
         String fxmlFileLogin = "/fxml/loginclient.fxml";
         FXMLLoader loader = new FXMLLoader();
         Parent loginView = loader.load(getClass().getResource(fxmlFileLogin));
-        mainStage.setTitle("MyCoolCloudStorage");
-        mainStage.setScene(new Scene(loginView));
-        mainStage.setResizable(false);
-        mainStage.show();
+        stage.setTitle("MyCoolCloudStorage");
+        stage.setScene(new Scene(loginView));
+        stage.setResizable(false);
+        stage.setOnCloseRequest(event -> {
+            ConnectHolder.closeConnect();
+            Platform.exit();
+        });
+        stage.show();
     }
 
 }

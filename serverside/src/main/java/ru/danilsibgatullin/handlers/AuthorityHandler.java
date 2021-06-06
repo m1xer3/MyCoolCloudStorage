@@ -10,6 +10,10 @@ import ru.danilsibgatullin.services.AuthorityService;
 
 import java.nio.charset.StandardCharsets;
 
+
+/*
+Обработка команды на авторизацию от клиента
+ */
 public class AuthorityHandler extends SimpleChannelInboundHandler<String> {
     UserChanel user;
 
@@ -25,11 +29,9 @@ public class AuthorityHandler extends SimpleChannelInboundHandler<String> {
             String username = auth.authorityService(strArr[1],strArr[2]);
             if (!StringUtils.isNullOrEmpty(username)){
                 user.setUserName(username);
-                System.out.println(true);
                 ByteBuf buf = Unpooled.wrappedBuffer("true".getBytes(StandardCharsets.UTF_8));
                 ctx.writeAndFlush(buf);
             }else{
-                System.out.println(false);
                 ByteBuf buf = Unpooled.wrappedBuffer("false".getBytes(StandardCharsets.UTF_8));
                 ctx.writeAndFlush(buf);
             }

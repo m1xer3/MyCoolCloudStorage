@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /*
-Общий класс для отображения структуры папок
+Общий класс для отображения структуры папок который будет передаваться клиенту
  */
 public class StorageUnit implements Serializable {
 
@@ -13,13 +13,17 @@ public class StorageUnit implements Serializable {
 
     private List<File> fileList;
 
-    public StorageUnit(List<File> filesInFolder){
-        this.fileList=filesInFolder;
+    public String getUserCurrentPath() {
+        return userCurrentPath;
     }
 
-    public void setFileList(List<File> fileList) {
-        this.fileList = fileList;
+    private String userCurrentPath;
+
+    public StorageUnit(List<File> filesInFolder, String str) {
+        this.userCurrentPath = str;
+        this.fileList = filesInFolder;
     }
+
 
     public List<File> getFileList() {
         return fileList;

@@ -20,7 +20,6 @@ public class ByteHandlerIn1 extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf buf = (ByteBuf) msg;
-        System.out.println("buf: " + buf);
         StringBuilder sb = new StringBuilder();
         int byteCount=0; //первые 4 байта используем для команд
         //читаем команду
@@ -31,7 +30,7 @@ public class ByteHandlerIn1 extends ChannelInboundHandlerAdapter {
         String command = sb.toString();
         sb=new StringBuilder();
         //если команда начинается на -nfl , то значит передается файл и будем обрабатывать отдельно
-        if(!"-nfl".equals(command)){
+        if(!"-nfl ".equals(command)){
             sb.append(command);
             while (buf.isReadable()){
                 sb.append((char) buf.readByte());

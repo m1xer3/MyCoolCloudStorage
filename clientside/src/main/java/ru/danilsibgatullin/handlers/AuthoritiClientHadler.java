@@ -11,9 +11,12 @@ import ru.danilsibgatullin.services.ConnectHolder;
 
 import java.nio.charset.StandardCharsets;
 
+/*
+Входная точка обработки in -1 , выполняет проверку авторизации , если авторизация уже прошла пробрасывает сообщение дальше
+ */
 public class AuthoritiClientHadler extends SimpleChannelInboundHandler<ByteBuf> {
 
-    LoginClientController control;
+    private LoginClientController control;
 
     public AuthoritiClientHadler(LoginClientController controller){
         this.control=controller;
@@ -29,12 +32,11 @@ public class AuthoritiClientHadler extends SimpleChannelInboundHandler<ByteBuf> 
                 byteCount++;
             }
             if ("true".equals(sb.toString())){
-                System.out.println("Authority SUCCES");
                 control.setAuthorized(true);
                 String toSend = "getd";
                 ByteBuf buf = Unpooled.wrappedBuffer(toSend.getBytes(StandardCharsets.UTF_8));
                 ConnectHolder.channel.writeAndFlush(buf);
-            }else if("false".equals(sb.toString())) {
+            }else if("fals".equals(sb.toString())) {
                 System.out.println("Authority FALSE");
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -45,7 +47,6 @@ public class AuthoritiClientHadler extends SimpleChannelInboundHandler<ByteBuf> 
         }else{
             ctx.fireChannelRead(byteBuf.retain());
         }
-
     }
 
 }

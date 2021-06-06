@@ -2,6 +2,8 @@ package ru.danilsibgatullin.models;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import ru.danilsibgatullin.handlers.AuthorityHandler;
 import ru.danilsibgatullin.handlers.ByteHandlerIn1;
@@ -11,16 +13,18 @@ import ru.danilsibgatullin.services.FileService;
 
 import java.io.IOException;
 
+/*
+Класс содержит основную информацию по подключившемуся пользователю
+ */
+
 public class UserChanel extends ChannelInitializer {
 
-    private String currentPath; //TODO Определить откуда получать текущую папку клиента
-    private String userName; //TODO Определить как получить имя клиента при подлкючении
+    private String currentPath;
     private String userSystemPath;
     private FileService fs;
 
 
     public void setUserName(String userName) throws IOException {
-        this.userName = userName;
         this.userSystemPath="serverfolder/"+userName;
         this.fs=new FileService(userName);
         this.currentPath=userSystemPath;
@@ -29,19 +33,15 @@ public class UserChanel extends ChannelInitializer {
 
     @Override
     protected void initChannel(Channel ch) throws Exception {
-        ch.pipeline().addLast(
-
+        ch.pipeline()
+                .addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4))
+                .addLast(new LengthFieldPrepender(4))
+                .addLast(
                 new ByteHandlerIn1(),
                 new ObjectEncoder(),
                 new AuthorityHandler(this),
                 new StringCommandHandler(this),
                 new FileUploadHandler(this)
-
-
-
-
-
-//				new OutputHandler(), //TODO Реализовать OUT
         );
     }
 
@@ -61,8 +61,5 @@ public class UserChanel extends ChannelInitializer {
         this.currentPath = currentPath;
     }
 
-    public String getUserName() {
-        return userName;
-    }
 
 }

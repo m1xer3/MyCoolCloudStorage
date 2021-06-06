@@ -3,6 +3,7 @@ package ru.danilsibgatullin.controllers;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 
 /*
-Класс контроллер окна авторизации
+Класс контроллер окна авторизации после успешной авторизации закрывается и открывает основное рабочее окно
  */
 public class LoginClientController {
 
@@ -65,6 +66,10 @@ public class LoginClientController {
                 mainView  = loader.load(getClass().getResource("/fxml/mainclient.fxml"));
                 stage.setScene(new Scene(mainView));
                 stage.setResizable(false);
+                stage.setOnCloseRequest(event -> {
+                    ConnectHolder.closeConnect();
+                    Platform.exit();
+                });
                 stage.show();
                 Stage stage2 = (Stage) connectButton.getScene().getWindow();
                 stage2.hide();

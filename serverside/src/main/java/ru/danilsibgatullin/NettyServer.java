@@ -7,12 +7,13 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import ru.danilsibgatullin.models.UserChanel;
 
+/*
+Настройка сервера
+ */
 public class NettyServer {
     public NettyServer(Integer port) {
         EventLoopGroup auth = new NioEventLoopGroup(1);
         EventLoopGroup worker = new NioEventLoopGroup();
-
-
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();

@@ -13,14 +13,17 @@ public class StorageUnit implements Serializable {
 
     private List<File> fileList;
 
-    public StorageUnit(List<File> filesInFolder){
-        System.out.println("create");
+    public String getUserCurrentPath() {
+        return userCurrentPath;
+    }
+
+    private String userCurrentPath;
+
+    public StorageUnit(List<File> filesInFolder,String str){
+        this.userCurrentPath=str;
         this.fileList=filesInFolder;
     }
 
-    public void setFileList(List<File> fileList) {
-        this.fileList = fileList;
-    }
 
     public List<File> getFileList() {
         return fileList;

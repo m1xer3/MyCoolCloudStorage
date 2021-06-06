@@ -1,14 +1,12 @@
 package ru.danilsibgatullin.handlers;
 
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import ru.danilsibgatullin.models.StorageUnit;
 import ru.danilsibgatullin.models.UserChanel;
 import ru.danilsibgatullin.services.FileService;
-
-import java.io.File;
 import java.nio.file.Path;
-import java.util.List;
+
 
 
 /*
@@ -31,34 +29,23 @@ public class StringCommandHandler extends SimpleChannelInboundHandler<String> {
             System.out.println(str);
             fs.mkDir(chanel.getCurrentPath(),str.substring(5));
         }else if(str.startsWith("getd")){
-            List<File> list= fs.getDirectoryContent(Path.of(chanel.getCurrentPath()));
-//          временно
-            for (File file : list) {
-                System.out.println(file.getName());
-            }
-//            --
-            ctx.writeAndFlush(new StorageUnit(list));
+            fs.getDirectoryContent(chanel,ctx,Path.of(chanel.getCurrentPath()));
         }else if(str.startsWith("--rm")) {
             fs.delDir(chanel.getCurrentPath(),str.substring(5));
+        }else if(str.startsWith("-cat")) {
+            fs.viewFile(ctx,chanel.getCurrentPath(),str.substring(5));
+        } else if(str.startsWith("load")) {
+            fs.sendFile(ctx,chanel.getCurrentPath(),str.substring(5));
+        } else if(str.startsWith("info")) {
+            fs.infoStorageUnit(ctx,chanel.getCurrentPath(),str.substring(5));
+        } else if(str.startsWith("srch")) {
+            fs.searchFile(ctx,chanel,chanel.getUserSystemPath(),str.substring(5));
         } else if(str.startsWith("--cd")){
-            changeDir(str.substring(5));
+            fs.changeDir(chanel,str.substring(5));
+            fs.getDirectoryContent(chanel,ctx,Path.of(chanel.getCurrentPath()));
         }
 
     }
 
-//    Изменение текущео пути
-    private void changeDir(String newDir){
-        String currentPath = chanel.getUserSystemPath();
-        if ("~".equals(newDir)){
-            chanel.setCurrentPath(currentPath);
-        }else if ("..".equals(newDir)){
-            String[] strArr = currentPath.split("/");
-            if (strArr.length>2){
-                int lastDirIndex = currentPath.lastIndexOf("/");
-                chanel.setCurrentPath(currentPath.substring(0,lastDirIndex));
-            }
-        } else{
-            chanel.setCurrentPath(currentPath+ "/" + newDir);
-        }
-    }
+
 }
