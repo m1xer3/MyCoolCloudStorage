@@ -4,6 +4,7 @@
 <ul>
 <li>Authenticate</li>
 <li>DB</li>
+<li>Automatic creation of a folder for a user if there is no folderr</li>
 <li>Open txt file</li>
 <li>Remove</li>
 <li>Create</li>
