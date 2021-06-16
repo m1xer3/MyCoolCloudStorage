@@ -25,7 +25,7 @@
 
 <h2>Using tecchnologies server</h2>
 <ul>
-<li>JDK 1.11</li>
+<li>JDK 11</li>
 <li>mysql-connector-java 8.0.25</li>
 <li>IO NETTY 4.1.10.Final</li>
 </ul>
